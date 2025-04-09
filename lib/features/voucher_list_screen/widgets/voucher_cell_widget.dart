@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:uena_community_flutter/commons/models/voucher_model.dart';
 import 'package:uena_community_flutter/commons/uena_community_colors.dart';
 import 'package:uena_community_flutter/commons/ui/uena_community_text.dart';
+import 'package:uena_community_flutter/commons/utils/string_utils.dart';
 
 class VoucherCellWidget extends StatelessWidget {
   final VoucherModel voucherModel;
@@ -34,20 +35,10 @@ class VoucherCellWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                UenaCommunityText(
-                  voucherModel.title,
-                  size: 14.0,
-                  weight: FontWeight.bold,
-                ),
-                const SizedBox(width: 4.0),
-                UenaCommunityText(
-                  "(x${voucherModel.quantity})",
-                  size: 14.0,
-                  isItalic: true,
-                ),
-              ],
+            UenaCommunityText(
+              voucherModel.title,
+              size: 14.0,
+              weight: FontWeight.bold,
             ),
             const SizedBox(height: 8.0),
             UenaCommunityText(
@@ -76,11 +67,13 @@ class VoucherCellWidget extends StatelessWidget {
                   weight: FontWeight.bold,
                   size: 10.0,
                 ),
-                const Spacer(),
-                UenaCommunityText(
-                  "Expired: ${voucherModel.expiredAt}",
-                  size: 10.0,
-                ),
+                if (voucherModel.expiredAt != null) ...[
+                  const Spacer(),
+                  UenaCommunityText(
+                    "Expired: ${StringUtils.extractDateFromISOString(voucherModel.expiredAt!)}",
+                    size: 10.0,
+                  ),
+                ]
               ],
             ),
           ],

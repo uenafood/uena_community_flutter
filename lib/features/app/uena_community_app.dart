@@ -12,7 +12,7 @@ class UenaCommunityApp extends StatelessWidget {
       color: UenaCommunityColors.grayLight,
       alignment: Alignment.center,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 500),
+        constraints: const BoxConstraints(maxWidth: 500.0),
         child: MaterialApp(
           title: "UENA Community",
           debugShowCheckedModeBanner: false,

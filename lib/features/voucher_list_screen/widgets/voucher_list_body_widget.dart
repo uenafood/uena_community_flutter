@@ -15,41 +15,49 @@ class VoucherListBodyWidget extends StatelessWidget {
     final state = cubit.state;
 
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-            child: UenaCommunityText(
-              "Voucher Saya",
-              size: 16.0,
-              weight: FontWeight.bold,
-              alignment: TextAlign.start,
-            ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height,
+        ),
+        child: IntrinsicHeight(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+                child: UenaCommunityText(
+                  "Voucher Saya",
+                  size: 16.0,
+                  weight: FontWeight.bold,
+                  alignment: TextAlign.start,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    for (int i = 0; i < state.voucherList.length; i++) ...[
+                      VoucherCellWidget(
+                        voucherModel: state.voucherList[i],
+                        onTapped: () async {
+                          await Clipboard.setData(
+                              ClipboardData(text: state.voucherList[i].code));
+                          cubit.updateSuccessMessage("Berhasil Menyalin Kode!");
+                        },
+                      ),
+                      SizedBox(
+                          height:
+                              i == state.voucherList.length - 1 ? 36.0 : 8.0),
+                    ],
+                  ],
+                ),
+              ),
+              const Spacer(),
+              const UenaCommunityFooter(onlyShowCopyright: true)
+            ],
           ),
-          const SizedBox(height: 16.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final voucherModel = state.voucherList[index];
-                return VoucherCellWidget(
-                  voucherModel: state.voucherList[index],
-                  onTapped: () async {
-                    await Clipboard.setData(
-                        ClipboardData(text: voucherModel.code));
-                    cubit.updateSuccessMessage("Berhasil Menyalin Kode!");
-                  },
-                );
-              },
-              separatorBuilder: (context, index) => const SizedBox(height: 8.0),
-              itemCount: state.voucherList.length,
-            ),
-          ),
-          const SizedBox(height: 48.0),
-          const UenaCommunityFooter(onlyShowCopyright: true)
-        ],
+        ),
       ),
     );
   }

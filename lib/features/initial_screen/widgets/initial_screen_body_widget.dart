@@ -17,10 +17,12 @@ class InitialScreenBodyWidget extends StatelessWidget {
     final cubit = context.watch<UenaCommunityCubit>();
     final state = cubit.state;
 
+    final screenHeight = MediaQuery.of(context).size.height - 24.0;
+
     return SingleChildScrollView(
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minHeight: MediaQuery.of(context).size.height,
+          minHeight: screenHeight < 720.0 ? 720.0 : screenHeight,
         ),
         child: IntrinsicHeight(
           child: Container(
@@ -34,7 +36,6 @@ class InitialScreenBodyWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Image.asset(
                     Constants.webpAsset("community_landing"),
-                    fit: BoxFit.contain,
                   ),
                 ),
                 const SizedBox(height: 12.0),

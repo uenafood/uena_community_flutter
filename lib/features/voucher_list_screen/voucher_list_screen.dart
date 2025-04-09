@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uena_community_flutter/commons/ui/uena_community_app_bar.dart';
-import 'package:uena_community_flutter/commons/ui/uena_community_footer.dart';
 import 'package:uena_community_flutter/commons/ui/uena_community_snackbar.dart';
 import 'package:uena_community_flutter/features/app/cubits/uena_community_cubit.dart';
 import 'package:uena_community_flutter/features/app/cubits/uena_community_state.dart';

@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uena_community_flutter/commons/api/api_service.dart';
+import 'package:uena_community_flutter/commons/api/endpoints.dart';
 import 'package:uena_community_flutter/commons/models/voucher_model.dart';
 import 'package:uena_community_flutter/features/app/cubits/uena_community_state.dart';
 
@@ -9,7 +11,6 @@ class UenaCommunityCubit extends Cubit<UenaCommunityState> {
     required void Function() onSuccess,
     required void Function(String message) onFailure,
   }) {
-    // todo : fetch using wa numbers
     if (state.whatsappNumber.isEmpty) {
       onFailure("Mohon isi nomor WhatsApp terlebih dahulu!");
       return;
@@ -17,26 +18,25 @@ class UenaCommunityCubit extends Cubit<UenaCommunityState> {
 
     emit(state.copy(isLoadingVouchers: true));
 
-    Future.delayed(const Duration(seconds: 2), () {
-      emit(
-        state.copy(
+    APIService.fetch(
+      Endpoints.getVoucherList,
+      httpMethod: HttpMethod.post,
+      body: {
+        "phoneNumber": "62${state.whatsappNumber}",
+      },
+      onSuccess: (result) {
+        final responseData = VoucherListResponse.fromJson(result.data);
+        emit(state.copy(
           isLoadingVouchers: false,
-          voucherList: List.generate(
-            20,
-            (index) => VoucherModel(
-              title: "April Barokah 45%",
-              quantity: index,
-              description:
-                  "Promo khusus April untuk pembelian di Kasir dengan minimum transaksi 50rb.",
-              code: "49RT$index",
-              expiredAt: "12-12-2025",
-            ),
-          ),
-        ),
-      );
-
-      onSuccess();
-    });
+          voucherList: responseData.vouchers,
+        ));
+        onSuccess();
+      },
+      onFailure: (errorMessage) {
+        emit(state.copy(isLoadingVouchers: false));
+        onFailure(errorMessage);
+      },
+    );
   }
 
   updateWhatsappNumber(String value) {

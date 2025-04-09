@@ -24,7 +24,7 @@ class APIService {
 
     try {
       final Response result = await _dio.request(
-        endpoint,
+        requestEndpoint,
         data: body,
         queryParameters: queryParameters,
         options: Options(
@@ -36,9 +36,9 @@ class APIService {
 
       if (kDebugMode) {
         print("REQ from $requestEndpoint:");
-        print("REQ QUERY PARAMS :${json.encode(requestQueryParameters)}");
-        print("REQ BODY : ${json.encode(requestBody)}");
-        print("RESPONSE : ${json.encode(response)}");
+        print("REQ QUERY PARAMS :$requestQueryParameters");
+        print("REQ BODY : $requestBody");
+        print("RESPONSE : $response");
       }
 
       onSuccess(response);
