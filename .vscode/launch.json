@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "UENA Community Production",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "app.flavor=production"
+      ],
+    },
+    {
+      "name": "UENA Community Staging",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [
+        "--dart-define",
+        "app.flavor=staging"
+      ],
+    },
+  ]
+}
